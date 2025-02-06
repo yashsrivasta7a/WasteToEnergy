@@ -13,6 +13,7 @@
     "@auth0/auth0-react": "^2.3.0",
     "@google/generative-ai": "^0.21.0",
     "@nivo/line": "^0.88.0",
+    "@nivo/marimekko": "^0.88.0",
     "@nivo/radar": "^0.88.0",
     "@nivo/radial-bar": "^0.88.0",
     "firebase": "^11.2.0",

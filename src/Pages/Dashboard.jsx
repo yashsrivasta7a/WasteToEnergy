@@ -5,6 +5,7 @@ import useFetchData from "../components/UseFetchData";
 import LineChartComponent from "../components/LineChart";
 import LogoutButton from "../components/Logout";
 import RadialBarChartComponent from "../components/RadialBar";
+import MarimekkoChartComponent from "../components/MarimekkoChart";
 
 const Dashboard = () => {
     const [userInput, setUserInput] = useState(null);
@@ -19,14 +20,11 @@ const Dashboard = () => {
         setAiResponse(response);
     };
 
-    // List of parameters for separate charts
+    // List of parameters for different chart types
     const parameters1 = [
         "Energy_Generated_kWh",
-        "Waste_Diverted_from_Landfill_kg",
         "Pollution_Reduction_CO2_emissions_in_kg",
-        "Water_Saved_Kilo_liters",
         "Methane_Emissions_Prevented_kg_CH4",
-        "Compost_Created_kg",
         "Biogas_Produced_m^3",
         "Reduction_in_Fossil_Fuel_Usage_kWh_equivalent",
         "Cost_Savings_in_Waste_Management_currency",
@@ -36,10 +34,9 @@ const Dashboard = () => {
         "Reduction_in_Transport_Emissions_kg_CO2",
     ];
 
-    const parameters2 = [
-        "Odor_Reduction_%",
-        "Improved_Soil_Health_%",
-    ]
+    const parameters2 = ["Odor_Reduction_%", "Improved_Soil_Health_%"];
+
+    const parameters3 = ["Waste_Diverted_from_Landfill_kg", "Water_Saved_Kilo_liters", "Compost_Created_kg"];
 
     return (
         <div className="dashboard">
@@ -53,8 +50,9 @@ const Dashboard = () => {
                     <pre>{JSON.stringify(aiResponse, null, 2)}</pre>
                 </div>
             )}
+
             <h2>Performance Metrics Over Time</h2>
-            {data && data.length > 0 && (
+            {data && data.length > 0 ? (
                 <div className="charts-container">
                     {parameters1.map((param) => {
                         const chartData = [
@@ -62,13 +60,14 @@ const Dashboard = () => {
                                 id: param,
                                 data: data.map((entry) => ({
                                     x: entry.date,
-                                    y: entry[param] || 0, // Default to 0 if missing
+                                    y: entry[param] ? parseFloat(entry[param]) : 0, // Ensure numeric values
                                 })),
                             },
                         ];
 
                         return <LineChartComponent key={param} data={chartData} title={param.replace(/_/g, " ")} />;
                     })}
+
                     {parameters2.map((param) => {
                         const chartData = [
                             {
@@ -78,19 +77,27 @@ const Dashboard = () => {
                                         x: entry.date,
                                         y: typeof entry[param] === "number" && !isNaN(entry[param]) ? entry[param] : 0, // Ensure valid number
                                     }))
-                                    .filter((item) => item.y !== null && item.y !== undefined), // Filter out invalid entries
+                                    .filter((item) => item.y !== null && item.y !== undefined), // Remove invalid entries
                             },
                         ];
 
-                        return (
-                            <RadialBarChartComponent
-                                key={param}
-                                data={chartData}
-                                title={param.replace(/_/g, " ")}
-                            />
-                        );
+                        return <RadialBarChartComponent key={param} data={chartData} title={param.replace(/_/g, " ")} />;
                     })}
+
+                    {parameters3.map((param) => {
+                        const chartData = data.map((entry) => ({
+                            category: entry.date, // X-axis label (date)
+                            [param]: entry[param] ? parseFloat(entry[param]) : 0, // Ensure numeric values
+                        }));
+
+                        console.log(`Radar Chart Data for ${param}:`, chartData); // Debugging log
+
+                        return <MarimekkoChartComponent key={param} data={chartData} title={param.replace(/_/g, " ")} />;
+                    })}
+
                 </div>
+            ) : (
+                <p>Loading data or no data available...</p>
             )}
         </div>
     );
