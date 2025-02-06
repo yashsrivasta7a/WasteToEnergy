@@ -4,7 +4,17 @@ import React from "react";
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
-  return <button onClick={() => loginWithRedirect()}>Log In</button>;
+  return <button style={{
+    marginTop: "20px",
+    padding: "10px 20px",
+    border: "none",
+    backgroundColor: "#90ee90",
+    color: "#333",
+    fontSize: "1rem",
+    fontWeight: "900",
+    cursor: "pointer",
+    borderRadius: "5px"
+}} onClick={() => loginWithRedirect()}>Login / SignUp</button>;
 };
 
 export default LoginButton;
