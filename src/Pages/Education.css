@@ -1,0 +1,25 @@
+#EduTitle
+{
+    text-align: center;
+    color: #fdfbef;
+    font-size: 3rem;
+}
+.edu-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.edu-card{
+    background-color: #fdfbef;
+    padding: 1.5rem ;
+    padding-top: 0.3rem;
+    margin: 1rem 1rem;
+    border-radius: 20px;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);  /* Softer shadow */
+    transition: all 0.3s ease-in-out;  /* Smooth hover effect */
+    width: 35%;
+}
+.edu-card:hover{
+    transform: translateY(-2px);  /* Float up by 10px */
+    box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.2);  /* Stronger shadow for depth */
+}
