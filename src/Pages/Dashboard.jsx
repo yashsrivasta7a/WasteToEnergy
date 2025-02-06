@@ -3,6 +3,7 @@ import GeminiModel from "../components/GeminiModel";
 import LineChart from "../components/LineChart";
 import ProductForm from "../components/ProductForm"
 import RadarChart from "../components/RadarChart"
+import LogoutButton from "../components/Logout";
 
 function Dashboard() {
 
@@ -18,6 +19,7 @@ function Dashboard() {
             <ProductForm onSubmitData={setUserInput} />
             <GeminiModel userInput={userInput} onResponse={handleGeminiResponse} />
             {responseData && <RadarChart data={responseData} />}
+
             <LineChart />
         </>
     )
