@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const GeminiModel = ({ userInput, onResponse }) => {
     const [response, setResponse] = useState(null);
-    const genAI = new GoogleGenerativeAI("AIzaSyABYPcgp1MfUYJjj5_Y-nVlCsYJuQ2j3hY");
+    const genAI = new GoogleGenerativeAI("YOUR API KEY HERE");
 
     useEffect(() => {
         if (!userInput || userInput.length === 0) return;
