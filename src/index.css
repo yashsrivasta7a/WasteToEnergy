@@ -175,11 +175,15 @@ nav {
   align-items: center;
   justify-content: center;
   gap: 3rem;
-  width: 15%;
+  width: 15vw;
   height: 90vh;
 }
 
 .profile-icon path {
   fill: #414141;
   stroke: #414141;
+}
+
+#education {
+  display: flex;
 }

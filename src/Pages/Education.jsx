@@ -1,22 +1,26 @@
 import React from "react";
 import EducationData from "../components/EducationData";
 import "./Education.css"
+import Navbar from "../components/Navbar";
 
 const EducationPage = () => {
   return (
-    <>
-    <h1 id="EduTitle">Educational Centre</h1>
-    <div className="edu-container">
-      <h1>{EducationData.waste_to_energy.title}</h1>
-      {
-      EducationData.waste_to_energy.sections.map((section, index) => (
-        <div key={index} className="edu-card">
-          <h2>{section.title}</h2>
-          <p>{section.content}</p>
+    <section id="education">
+      <Navbar />
+      <div>
+        <h1 id="EduTitle">Educational Centre</h1>
+        <div className="edu-container">
+          <h1>{EducationData.waste_to_energy.title}</h1>
+          {
+            EducationData.waste_to_energy.sections.map((section, index) => (
+              <div key={index} className="edu-card">
+                <h2>{section.title}</h2>
+                <p>{section.content}</p>
+              </div>
+            ))}
         </div>
-      ))}
-    </div>
-    </>
+      </div>
+    </section>
   );
 };
 
