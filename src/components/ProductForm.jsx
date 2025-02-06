@@ -25,7 +25,7 @@ const ProductForm = ({ onSubmitData }) => {
 
     return (
         <div className="form-container">
-            <h2>Waste Input Form</h2>
+            <h3>Waste Input Form</h3>
             <form onSubmit={handleSubmit}>
                 {inputs.map((input, index) => (
                     <div key={input.id} className="input-group">
