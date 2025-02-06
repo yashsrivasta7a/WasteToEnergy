@@ -15,6 +15,7 @@ import { NavLink } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const Dashboard = () => {
+    const [metric,setMetric] = useState(false);
     const [userInput, setUserInput] = useState(null);
     const [aiResponse, setAiResponse] = useState(null);
     const [selectedChart, setSelectedChart] = useState(null); // To track which chart is selected
@@ -22,6 +23,7 @@ const Dashboard = () => {
 
     const handleSubmitData = (data) => {
         setUserInput(data);
+        setMetric(true);
     };
 
     const handleAiResponse = (response) => {
@@ -52,9 +54,12 @@ const Dashboard = () => {
 
     return (
         <section id="dashboard">
+            <div className="Nav-container">
             <Navbar />
+            </div>
             <div className="dashboard">
                 <h1>Waste-to-Energy Conversion</h1>
+                <div className="dashboard-container">
                 <ProductForm onSubmitData={handleSubmitData} />
                 {userInput && <GeminiModel userInput={userInput} onResponse={handleAiResponse} />}
                 {/* {aiResponse && (
@@ -62,80 +67,92 @@ const Dashboard = () => {
                         <h3>Verified Response:</h3>
                         <pre>{JSON.stringify(aiResponse, null, 2)}</pre>
                     </div>
-                )} */}
-                <h2>Performance Metrics Over Time</h2>
-                {data && data.length > 0 ? (
-                    <div className="charts-container">
-                        {/* Buttons for Chart Selection */}
-                        <div className="chart-buttons">
-                            {parameters1.map((param) => (
-                                <button key={param} onClick={() => handleChartSelection(param)}>
-                                    <FaChartLine /> {param.replace(/_/g, " ")}
-                                </button>
-                            ))}
-                            {parameters2.map((param) => (
-                                <button key={param} onClick={() => handleChartSelection(param)}>
-                                    <FaChartPie /> {param.replace(/_/g, " ")}
-                                </button>
-                            ))}
-                            {parameters3.map((param) => (
-                                <button key={param} onClick={() => handleChartSelection(param)}>
-                                    <FaChartArea /> {param.replace(/_/g, " ")}
-                                </button>
-                            ))}
-                        </div>
-                        {/* Render the selected chart */}
-                        <div className="selected-chart">
-                            {selectedChart && (
-                                <>
-                                    {/* <h3>{selectedChart.replace(/_/g, " ")}</h3> */}
-                                    {/* Render the selected chart based on button click */}
-                                    {parameters1.includes(selectedChart) && (
-                                        <LineChartComponent
-                                            data={[
-                                                {
-                                                    id: selectedChart,
-                                                    data: data.map((entry) => ({
-                                                        x: entry.date,
-                                                        y: entry[selectedChart] ? parseFloat(entry[selectedChart]) : 0, // Ensure numeric values
-                                                    })),
-                                                },
-                                            ]}
-                                            title={selectedChart.replace(/_/g, " ")}
-                                        />
-                                    )}
-                                    {parameters2.includes(selectedChart) && (
-                                        <RadialBarChartComponent
-                                            data={[
-                                                {
-                                                    id: selectedChart,
-                                                    data: data
-                                                        .map((entry) => ({
-                                                            x: entry.date,
-                                                            y: typeof entry[selectedChart] === "number" && !isNaN(entry[selectedChart]) ? entry[selectedChart] : 0, // Ensure valid number
-                                                        }))
-                                                        .filter((item) => item.y !== null && item.y !== undefined), // Remove invalid entries
-                                                },
-                                            ]}
-                                            title={selectedChart.replace(/_/g, " ")}
-                                        />
-                                    )}
-                                    {parameters3.includes(selectedChart) && (
-                                        <MarimekkoChartComponent
-                                            data={data.map((entry) => ({
-                                                category: entry.date, // X-axis label (date)
-                                                [selectedChart]: entry[selectedChart] ? parseFloat(entry[selectedChart]) : 0, // Ensure numeric values
-                                            }))}
-                                            title={selectedChart.replace(/_/g, " ")}
-                                        />
-                                    )}
-                                </>
+                )} */}</div>
+                {metric && (
+    <>
+    <div style={{
+
+borderRadius:'20px'
+    }}>
+        <h2>Performance Metrics Over Time</h2>
+        {data && data.length > 0 ? (
+            <div className="charts-container">
+                <div className="chart-buttons">
+                    {parameters1.map((param) => (
+                        <button key={param} onClick={() => handleChartSelection(param)}>
+                            <FaChartLine /> {param.replace(/_/g, " ")}
+                        </button>
+                    ))}
+                    {parameters2.map((param) => (
+                        <button key={param} onClick={() => handleChartSelection(param)}>
+                            <FaChartPie /> {param.replace(/_/g, " ")}
+                        </button>
+                    ))}
+                    {parameters3.map((param) => (
+                        <button key={param} onClick={() => handleChartSelection(param)}>
+                            <FaChartArea /> {param.replace(/_/g, " ")}
+                        </button>
+                    ))}
+                </div>
+                <div className="selected-chart">
+                    {selectedChart && (
+                        <>
+                            {parameters1.includes(selectedChart) && (
+                                <LineChartComponent
+                                    data={[
+                                        {
+                                            id: selectedChart,
+                                            data: data.map((entry) => ({
+                                                x: entry.date,
+                                                y: entry[selectedChart] ? parseFloat(entry[selectedChart]) : 0,
+                                            })),
+                                        },
+                                    ]}
+                                    title={selectedChart.replace(/_/g, " ")}
+                                />
                             )}
-                        </div>
-                    </div>
-                ) : (
-                    <p>Loading data or no data available...</p>
-                )}
+                            {parameters2.includes(selectedChart) && (
+                                <RadialBarChartComponent
+                                    data={[
+                                        {
+                                            id: selectedChart,
+                                            data: data
+                                                .map((entry) => ({
+                                                    x: entry.date,
+                                                    y: typeof entry[selectedChart] === "number" &&
+                                                    !isNaN(entry[selectedChart])
+                                                        ? entry[selectedChart]
+                                                        : 0,
+                                                }))
+                                                .filter((item) => item.y !== null && item.y !== undefined),
+                                        },
+                                    ]}
+                                    title={selectedChart.replace(/_/g, " ")}
+                                />
+                            )}
+                            {parameters3.includes(selectedChart) && (
+                                <MarimekkoChartComponent
+                                    data={data.map((entry) => ({
+                                        category: entry.date,
+                                        [selectedChart]: entry[selectedChart]
+                                            ? parseFloat(entry[selectedChart])
+                                            : 0,
+                                    }))}
+                                    title={selectedChart.replace(/_/g, " ")}
+                                />
+                            )}
+                        </>
+                    )}
+                </div>
+            </div>
+        ) : (
+            <p>Loading data or no data available...</p>
+        )}
+        </div>
+    </>
+)}
+
+                
             </div>
         </section>
     );

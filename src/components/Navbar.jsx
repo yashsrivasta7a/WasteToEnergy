@@ -29,7 +29,7 @@ const Navbar = () => {
             <NavLink>
                 <BsCoin size={45} fill="#414141" />
             </NavLink>
-            <NavLink>
+            <NavLink to={"/profile"}>
                 <CgProfile className="profile-icon" size={45} fill="#414141" stroke="#414141" />
             </NavLink>
             <LogoutButton />

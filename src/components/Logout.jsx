@@ -6,7 +6,7 @@ const LogoutButton = () => {
   const { logout } = useAuth0();
 
   return (
-    <span style={{ cursor: 'pointer' }} onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+    <span style={{ cursor: 'pointer', marginTop:'2rem' }} onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
       <IoMdLogOut size={45} fill="#414141" />
     </span>
   );
