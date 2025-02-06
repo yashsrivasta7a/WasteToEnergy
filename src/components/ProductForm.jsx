@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const ProductForm = ({ onSubmitData }) => {
     const [inputs, setInputs] = useState([{ id: 1, product: "", quantity: "" }]);
+    const [date, setDate] = useState("");
 
     const handleAddInput = () => {
         setInputs([...inputs, { id: inputs.length + 1, product: "", quantity: "" }]);
@@ -19,7 +20,7 @@ const ProductForm = ({ onSubmitData }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmitData(inputs); // Send data to parent component
+        onSubmitData({ inputs, date }); // ✅ Send data along with date to GeminiModel
     };
 
     return (
@@ -36,8 +37,8 @@ const ProductForm = ({ onSubmitData }) => {
                             required
                         />
                         <input
-                            type="number"
-                            placeholder="Quantity"
+                            type="text"
+                            placeholder="Quantity (e.g., 2 kg)"
                             value={input.quantity}
                             onChange={(e) => handleChange(index, "quantity", e.target.value)}
                             required
@@ -49,6 +50,15 @@ const ProductForm = ({ onSubmitData }) => {
                         )}
                     </div>
                 ))}
+
+                {/* 📅 Date Input Field */}
+                <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    required
+                />
+
                 <button type="button" className="add-btn" onClick={handleAddInput}>
                     +
                 </button>
