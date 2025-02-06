@@ -11,7 +11,7 @@ const GeminiModel = ({ userInput, onResponse }) => {
     const [response, setResponse] = useState(null);
     const [isVerified, setIsVerified] = useState(false);
 
-    const genAI = new GoogleGenerativeAI("AIzaSyDliX1R5txNCnLjRd1TtEpeb1keRRGfmu8");
+    const genAI = new GoogleGenerativeAI("");
 
     useEffect(() => {
         if (!userInput || userInput.inputs.length === 0) return;
