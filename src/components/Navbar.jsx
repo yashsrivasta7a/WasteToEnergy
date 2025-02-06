@@ -20,13 +20,13 @@ const Navbar = () => {
             <NavLink to={"/dashboard"}>
                 <SiConvertio size={45} fill="#414141" />
             </NavLink>
-            <NavLink>
+            <NavLink to={'/dashboard'}>
                 <FaChartLine size={45} fill="#414141" />
             </NavLink>
             <NavLink to={"/Education"}>
                 <FaBook size={45} fill="#414141" />
             </NavLink>
-            <NavLink>
+            <NavLink to={'/coins'}>
                 <BsCoin size={45} fill="#414141" />
             </NavLink>
             <NavLink to={"/profile"}>
