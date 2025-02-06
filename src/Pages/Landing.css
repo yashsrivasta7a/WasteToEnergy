@@ -7,14 +7,14 @@
 }
 
 .heading {
-  font-size: 3rem;  /* Increased for better readability */
-  font-weight: 600; /* Bolder text */
-  color: #222; /* Darker tone */
-  line-height: 1.2; /* Improved spacing */
+  font-size: 3rem;  
+  font-weight: 600; 
+  color: #222; 
+  line-height: 1.2;
 }
 
 .highlight {
-  color: #2a9d52; /* Green highlight */
+  color: #2a9d52; 
   font-weight: 800;
 }
 
@@ -24,7 +24,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 50px;
-  background-color: #fefaf1; /* Light warm background */
+  background-color: #fefaf1; 
 }
 
 .login-button {
