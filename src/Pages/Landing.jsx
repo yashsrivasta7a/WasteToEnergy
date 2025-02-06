@@ -1,8 +1,12 @@
 import React from 'react'
+import LoginButton from '../components/Login'
+
 
 function Landing() {
     return (
-        <div>Landing</div>
+        <div>
+        <LoginButton/>            
+        </div>
     )
 }
 

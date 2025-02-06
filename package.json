@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.3.0",
     "@google/generative-ai": "^0.21.0",
     "@nivo/radar": "^0.88.0",
     "react": "^18.3.1",
