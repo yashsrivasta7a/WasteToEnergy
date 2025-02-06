@@ -2,7 +2,7 @@ import { ResponsiveLine } from "@nivo/line";
 
 const LineChartComponent = ({ data, title }) => {
     return (
-        <div className="chart" style={{ height: "300px", width: "40%", marginBottom: "7rem", marginTop: "1rem" }}>
+        <div className="chart" style={{ height: "400px", width: "80%", marginBottom: "7rem", marginTop: "1rem" }}>
             <ResponsiveLine
                 data={data}
                 margin={{ top: 50, right: 50, bottom: 50, left: 60 }}

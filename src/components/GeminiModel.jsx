@@ -32,7 +32,7 @@ const GeminiModel = ({ userInput, onResponse }) => {
           Waste Data:
           ${userInput.inputs.map((item) => `${item.quantity} of ${item.product}`).join(", ")}
 
-          Handle fractions and decimals properly so it doesn’t break the JSON format.
+          Handle fractions and decimals properly so it doesn't break the JSON format.
           Assume optimal conditions for production.
 
           Provide the response in JSON format *ONLY* and *REMOVE* markdown formatting like \`\`\`json or \`\`\`.
@@ -100,23 +100,23 @@ const GeminiModel = ({ userInput, onResponse }) => {
             }
         });
 
-        return () => unsubscribe(); // Cleanup listener
+        return () => unsubscribe();
     }, []);
 
     return (
         <div>
-            <h3>Parameters</h3>
+            <h3 style={{ textAlign: 'center', fontSize: '2rem', margin: '1rem 0' }}>AI Powered Environmental Parameters</h3>
             {response ? (
                 response.error ? (
                     <p>{response.error}</p>
                 ) : (
-                    <pre>{JSON.stringify(response, null, 2)}</pre>
+                    <pre className="ai-content">{JSON.stringify(response, null, 2)}</pre>
                 )
             ) : (
                 <p>Waiting for input...</p>
             )}
 
-            <button onClick={handleVerify} disabled={!response || response.error || isVerified}>
+            <button style={{ margin: '1rem auto', backgroundColor: '#007bff' }} onClick={handleVerify} disabled={!response || response.error || isVerified}>
                 {isVerified ? "Verified ✅" : "Verify"}
             </button>
         </div>

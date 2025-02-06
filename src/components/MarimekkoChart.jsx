@@ -7,7 +7,7 @@ const RadarChartComponent = ({ data, title }) => {
     }
 
     return (
-        <div className="chart" style={{ height: 400, width: '50%', marginBottom: "7rem" }}>
+        <div className="chart" style={{ height: 400, width: '80%', marginBottom: "7rem" }}>
             <ResponsiveRadar
                 data={data}
                 keys={Object.keys(data[0]).filter(key => key !== "category")} // Use all keys except "category"

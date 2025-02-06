@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Dashboard from "./Pages/Dashboard";
 import Landing from "./Pages/Landing";
 import Education from "./Pages/Education";
+import Coins from "./Pages/Coins";
+import Profile from "./Pages/Profile";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -15,7 +17,9 @@ function App() {
           <Route path="/" element={<Landing />} />
         )}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/"} />} />
-        <Route path="/education" element={<Education/>}/>
+        <Route path="/education" element={<Education />} />
+        <Route path="/coins" element={<Coins />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
     </Router>
   );

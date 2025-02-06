@@ -7,7 +7,7 @@ const RadialBarChartComponent = ({ data, title }) => {
     }
 
     return (
-        <div className="chart" style={{ height: 300, width: '40%', marginBottom: "7rem" }}>
+        <div className="chart" style={{ height: 400, width: '80%', marginBottom: "7rem" }}>
             <ResponsiveRadialBar
                 data={data}
                 valueFormat=".2f" // Format values as decimals

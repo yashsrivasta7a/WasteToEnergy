@@ -8,6 +8,19 @@ html {
   font-family: 'Outfit', sans-serif;
 }
 
+button {
+  background-color: #4caf50;
+  border: none;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
 .form-container {
   max-width: 400px;
   margin: 20px auto;
@@ -60,7 +73,7 @@ input {
 }
 
 .remove-btn {
-  background-color: #ff4d4d;
+  background-color: #ff0000;
   color: white;
   font-size: 14px;
   padding: 6px;
@@ -85,6 +98,8 @@ input {
 .chart {
   padding: 10px;
   box-shadow: 2px 2px 15px 0px #80a37b;
+  width: 100%;
+  margin: 1rem auto;
 }
 
 .dashboard h1 {
@@ -98,4 +113,73 @@ input {
   margin: 1rem 0;
   font-size: 2rem;
   margin-top: 5rem;
+}
+
+.chart-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.chart-buttons button {
+  background-color: #4caf50;
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: white;
+  font-size: 14px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.selected-chart {
+  margin: 2rem auto;
+  padding: 1rem;
+  width: 80%;
+}
+
+.selected-chart h3 {
+  margin-bottom: 1rem;
+}
+
+.ai-content {
+  font-size: large;
+  margin: 1rem auto;
+  background-color: #fdfbef;
+  width: fit-content;
+  border-radius: 10px;
+  padding: 1rem;
+  font-family: 'Outfit', sans-serif;
+}
+
+#dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+nav {
+  border-radius: 20px;
+  background: #FDFAEF;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  width: 15%;
+  height: 90vh;
+}
+
+.profile-icon path {
+  fill: #414141;
+  stroke: #414141;
 }
