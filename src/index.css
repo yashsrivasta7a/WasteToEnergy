@@ -4,6 +4,7 @@ html {
   background-image: url(./assets/bg.svg);
   background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   padding: 1rem;
   font-family: 'Outfit', sans-serif;
 }
@@ -216,6 +217,9 @@ button:hover {
   gap: 1rem;
   position: relative;
   left: 2rem;
+  width: 80%;
+  margin: 1rem auto;
+  margin-top: 5rem;
 }
 
 .coupon {
@@ -228,7 +232,7 @@ button:hover {
   display: flex;
   align-items: center;
   width: 400px;
-  height: 150px; 
+  height: 150px;
   gap: 1rem;
   overflow: hidden;
 }
@@ -236,8 +240,7 @@ button:hover {
 .coupon img {
   height: 100%;
   width: 120px;
-  border-radius: 10px 0 0 10px; 
-  object-fit:fill;
+  border-radius: 10px 0 0 10px;
 }
 
 .coupon-content {
@@ -265,6 +268,11 @@ button:hover {
   font-size: 1rem;
   margin: 0;
   color: #444;
+}
+
+.coupon span h4 {
+  text-align: center;
+  margin: 0;
 }
 
 .coupon-footer {

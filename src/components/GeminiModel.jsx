@@ -27,7 +27,10 @@ const GeminiModel = ({ userInput, onResponse }) => {
           Biogas Produced (m^3), Reduction in Fossil Fuel Usage (liters or kWh equivalent),
           Cost Savings in Waste Management (currency), Odor Reduction (%), Improved Soil Health (%),
           Organic Fertilizer Produced (kg), Reduction in Land Usage (sq. meters),
-          Reduction in Chemical Fertilizer Use (kg), Reduction in Transport Emissions (kg CO2).
+          Reduction in Chemical Fertilizer Use (kg), Reduction in Transport Emissions (kg CO2),
+          Coins Generated.
+
+          Coins generated will be (Energy Generated*0.25 + Biogas Produced*0.5 + 0.2*Compst Created)*2
 
           Waste Data:
           ${userInput.inputs.map((item) => `${item.quantity} of ${item.product}`).join(", ")}
