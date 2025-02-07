@@ -203,6 +203,7 @@ nav {
   gap: 2rem;
   width: 5rem;
   height: 80vh;
+  position: fixed;
 }
 
 button:hover {
