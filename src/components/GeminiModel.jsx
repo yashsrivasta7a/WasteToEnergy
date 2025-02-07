@@ -1,18 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { ref, push, onValue, update } from "firebase/database";
+import { ref, push, onValue } from "firebase/database";
 import { database } from "../firebase";
 
-const sanitizeKey = (key) => {
-    return key.replace(/\s+/g, "_").replace(/[().#$/\[\]]/g, ""); // Ensure Firebase-safe keys
-};
+const sanitizeKey = (key) => key.replace(/\s+/g, "_").replace(/[().#$/\[\]]/g, ""); // Firebase-safe keys
 
 const GeminiModel = ({ userInput }) => {
     const [response, setResponse] = useState(null);
-    const [isVerified, setIsVerified] = useState(false);
+    const [status, setStatus] = useState(null); // "approved", "rejected", or null
     const [requestId, setRequestId] = useState(null);
-    const [generated, setGenerated] = useState(false); // Prevent multiple generations
+    const [generated, setGenerated] = useState(false);
 
     const genAI = new GoogleGenerativeAI("AIzaSyDliX1R5txNCnLjRd1TtEpeb1keRRGfmu8");
 
@@ -38,10 +36,7 @@ const GeminiModel = ({ userInput }) => {
                 Waste Data:
                 ${userInput.inputs.map((item) => `${item.quantity} of ${item.product}`).join(", ")}
       
-                Handle fractions and decimals properly so it doesn't break the JSON format.
-                Assume optimal conditions for production.
-      
-                Provide the response in JSON format *ONLY* and *REMOVE* markdown formatting like \`\`\`json or \`\`\`.
+                Provide the response in JSON format ONLY and REMOVE markdown formatting like \`\`\`json or \`\`\`.
               `;
 
                 const result = await model.generateContent({
@@ -50,7 +45,6 @@ const GeminiModel = ({ userInput }) => {
                 });
 
                 const generatedText = await result.response.text();
-
                 let cleanJsonString = generatedText
                     .replace(/```json\s*/g, "")
                     .replace(/```\s*$/g, "")
@@ -62,14 +56,13 @@ const GeminiModel = ({ userInput }) => {
 
                 const jsonData = JSON.parse(cleanJsonString);
 
-                // Sanitize keys before storing in Firebase
                 const sanitizedData = {};
                 Object.keys(jsonData).forEach((key) => {
                     sanitizedData[sanitizeKey(key)] = jsonData[key];
                 });
 
                 setResponse(sanitizedData);
-                setGenerated(true); // Prevents multiple generations
+                setGenerated(true);
             } catch (error) {
                 console.error("Error fetching response:", error);
                 setResponse({ error: "Failed to generate response." });
@@ -79,29 +72,33 @@ const GeminiModel = ({ userInput }) => {
         fetchResponse();
     }, [userInput]);
 
-    // 🔥 Push JSON to Firebase on "Verify" button click
     const handleVerify = () => {
-        if (!response || response.error || requestId) return; // Prevent multiple pushes
+        if (!response || response.error || requestId) return;
 
         const dbRef = ref(database, "requests");
         const newRequestRef = push(dbRef, {
             userInput,
             aiResponse: response,
-            approved: false, // Initially false, vendor will approve
+            approved: false,
+            rejected: false,
             date: new Date().toISOString(),
         });
 
-        setRequestId(newRequestRef.key); // Store request ID for tracking
+        setRequestId(newRequestRef.key);
     };
 
-    // Listen for approval updates from vendor
     useEffect(() => {
         if (!requestId) return;
 
         const requestRef = ref(database, `requests/${requestId}`);
         const unsubscribe = onValue(requestRef, (snapshot) => {
-            if (snapshot.exists() && snapshot.val().approved) {
-                setIsVerified(true);
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                if (data.approved) {
+                    setStatus("approved");
+                } else if (data.rejected) {
+                    setStatus("rejected");
+                }
             }
         });
 
@@ -116,9 +113,9 @@ const GeminiModel = ({ userInput }) => {
                     <p>{response.error}</p>
                 ) : (
                     <div className="ai-content">
-                        {response && Object.entries(response).map(([key, value]) => (
+                        {Object.entries(response).map(([key, value]) => (
                             <p key={key}>
-                                {key.replace(/_/g, " ")}:{typeof value === "object" ? JSON.stringify(value) : <strong>{value}</strong>}
+                                {key.replace(/_/g, " ")}: <strong>{typeof value === "object" ? JSON.stringify(value) : value}</strong>
                             </p>
                         ))}
                     </div>
@@ -128,11 +125,11 @@ const GeminiModel = ({ userInput }) => {
             )}
 
             <button
-                style={{ margin: '1rem auto', backgroundColor: '#007bff' }}
+                style={{ margin: '1rem auto', backgroundColor: status ? "#6c757d" : '#007bff' }}
                 onClick={handleVerify}
-                disabled={!response || response.error || requestId}
+                disabled={!!status || !response || response.error || requestId}
             >
-                {requestId ? "Verified ✅" : "Get Verified?"}
+                {status === "approved" ? "Verified ✅" : status === "rejected" ? "Rejected ❌" : "Get Verified?"}
             </button>
         </div>
     );
