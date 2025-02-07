@@ -22,7 +22,8 @@ function Profile() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                gap: '2rem'
+                gap: '2rem',
+                height: '90vh',
             }}>
                 <Navbar />
                 <div style={{
