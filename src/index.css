@@ -430,7 +430,8 @@ button:hover {
   font-family: 'Outfit', sans-serif;
 }
 
-.request-card .approve-btn {
+.request-card .approve-btn,
+.request-card .reject-btn {
   margin: 1rem auto;
 }
 
