@@ -6,7 +6,7 @@ import { database } from "../firebase";
 
 const sanitizeKey = (key) => key.replace(/\s+/g, "_").replace(/[().#$/\[\]]/g, ""); // Firebase-safe keys
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const API_KEY = process.env.GEMINI_API_KEY;
 const GeminiModel = ({ userInput }) => {
     const [response, setResponse] = useState(null);
     const [status, setStatus] = useState(null); // "approved", "rejected", or null

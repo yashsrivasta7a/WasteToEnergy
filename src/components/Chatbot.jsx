@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const API_KEY = process.env.GEMINI_API_KEY;
 
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
