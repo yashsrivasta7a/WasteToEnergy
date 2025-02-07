@@ -1,15 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { database, ref, push, onValue } from "../firebase";
+import { ref, push, onValue, update } from "firebase/database";
+import { database } from "../firebase";
 
 const sanitizeKey = (key) => {
     return key.replace(/\s+/g, "_").replace(/[().#$/\[\]]/g, ""); // Ensure Firebase-safe keys
 };
 
-const GeminiModel = ({ userInput, onResponse }) => {
+const GeminiModel = ({ userInput }) => {
     const [response, setResponse] = useState(null);
     const [isVerified, setIsVerified] = useState(false);
+    const [requestId, setRequestId] = useState(null);
 
     const genAI = new GoogleGenerativeAI("AIzaSyDliX1R5txNCnLjRd1TtEpeb1keRRGfmu8");
 
@@ -21,25 +23,26 @@ const GeminiModel = ({ userInput, onResponse }) => {
                 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
                 const prompt = `
-          Given the following organic waste inputs, generate a JSON response with the following details:
-          Energy Generated (kWh), Waste Diverted from Landfill (kg), Pollution Reduction (CO2 emissions in kg),
-          Water Saved (Kilo liters), Methane Emissions Prevented (kg CH4), Compost Created (kg),
-          Biogas Produced (m^3), Reduction in Fossil Fuel Usage (liters or kWh equivalent),
-          Cost Savings in Waste Management (currency), Odor Reduction (%), Improved Soil Health (%),
-          Organic Fertilizer Produced (kg), Reduction in Land Usage (sq. meters),
-          Reduction in Chemical Fertilizer Use (kg), Reduction in Transport Emissions (kg CO2),
-          Coins Generated.
-
-          Coins generated will be (Energy Generated*0.25 + Biogas Produced*0.5 + 0.2*Compst Created)*2
-
-          Waste Data:
-          ${userInput.inputs.map((item) => `${item.quantity} of ${item.product}`).join(", ")}
-
-          Handle fractions and decimals properly so it doesn't break the JSON format.
-          Assume optimal conditions for production.
-
-          Provide the response in JSON format *ONLY* and *REMOVE* markdown formatting like \`\`\`json or \`\`\`.
-        `;
+                Given the following organic waste inputs, generate a JSON response with the following details:
+                Energy Generated (kWh), Waste Diverted from Landfill (kg), Pollution Reduction (CO2 emissions in kg),
+                Water Saved (Kilo liters), Methane Emissions Prevented (kg CH4), Compost Created (kg),
+                Biogas Produced (m^3), Reduction in Fossil Fuel Usage (liters or kWh equivalent),
+                Cost Savings in Waste Management (currency), Odor Reduction (%), Improved Soil Health (%),
+                Organic Fertilizer Produced (kg), Reduction in Land Usage (sq. meters),
+                Reduction in Chemical Fertilizer Use (kg), Reduction in Transport Emissions (kg CO2),
+                Coins Generated.
+      
+                Coins generated will be (Energy Generated*0.25 + Biogas Produced*0.5 + 0.2*Compst Created)*2
+      
+                Waste Data:
+                ${userInput.inputs.map((item) => `${item.quantity} of ${item.product}`).join(", ")}
+      
+                Handle fractions and decimals properly so it doesn't break the JSON format.
+                Assume optimal conditions for production.
+      
+                Provide the response in JSON format *ONLY* and *REMOVE* markdown formatting like \`\`\`json or \`\`\`.
+              `;
+      
 
                 const result = await model.generateContent({
                     contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -47,7 +50,6 @@ const GeminiModel = ({ userInput, onResponse }) => {
                 });
 
                 const generatedText = await result.response.text();
-                console.log("Generated text:", generatedText);
 
                 let cleanJsonString = generatedText
                     .replace(/```json\s*/g, "")
@@ -59,7 +61,6 @@ const GeminiModel = ({ userInput, onResponse }) => {
                 }
 
                 const jsonData = JSON.parse(cleanJsonString);
-                console.log("Generated response:", jsonData);
 
                 // Sanitize keys before storing in Firebase
                 const sanitizedData = {};
@@ -68,11 +69,9 @@ const GeminiModel = ({ userInput, onResponse }) => {
                 });
 
                 setResponse(sanitizedData);
-                onResponse(sanitizedData);
             } catch (error) {
                 console.error("Error fetching response:", error);
                 setResponse({ error: "Failed to generate response." });
-                onResponse({ error: "Failed to generate response." });
             }
         };
 
@@ -83,28 +82,30 @@ const GeminiModel = ({ userInput, onResponse }) => {
     const handleVerify = () => {
         if (!response || response.error) return;
 
-        const dbRef = ref(database, "waste-data");
-        const dataToSave = { ...response, date: userInput.date };
+        const dbRef = ref(database, "requests");
+        const newRequestRef = push(dbRef, {
+            userInput,
+            aiResponse: response,
+            approved: false, // Initially false, vendor will approve
+            date: new Date().toISOString(),
+        });
 
-        push(dbRef, dataToSave)
-            .then(() => {
-                alert("Data saved successfully!");
-                setIsVerified(true);
-            })
-            .catch((error) => console.error("Firebase error:", error));
+        setRequestId(newRequestRef.key); // Store request ID for tracking
     };
 
-    // Fetch real-time updates from Firebase for debugging or further processing
+    // Listen for approval updates from vendor
     useEffect(() => {
-        const dbRef = ref(database, "waste-data");
-        const unsubscribe = onValue(dbRef, (snapshot) => {
-            if (snapshot.exists()) {
-                console.log("Real-time Firebase data:", snapshot.val());
+        if (!requestId) return;
+
+        const requestRef = ref(database, `requests/${requestId}`);
+        const unsubscribe = onValue(requestRef, (snapshot) => {
+            if (snapshot.exists() && snapshot.val().approved) {
+                setIsVerified(true);
             }
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [requestId]);
 
     return (
         <div>
@@ -119,7 +120,11 @@ const GeminiModel = ({ userInput, onResponse }) => {
                 <p>Waiting for input...</p>
             )}
 
-            <button style={{ margin: '1rem auto', backgroundColor: '#007bff' }} onClick={handleVerify} disabled={!response || response.error || isVerified}>
+            <button 
+                style={{ margin: '1rem auto', backgroundColor: '#007bff' }} 
+                onClick={handleVerify} 
+                disabled={!response || response.error || isVerified}
+            >
                 {isVerified ? "Verified ✅" : "Verify"}
             </button>
         </div>

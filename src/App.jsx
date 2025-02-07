@@ -6,6 +6,8 @@ import Education from "./Pages/Education";
 import Coins from "./Pages/Coins";
 import Profile from "./Pages/Profile";
 import Chatbot from "./components/Chatbot";
+import VendorDashboard from "./Pages/VendorDashboard";
+
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -22,6 +24,7 @@ function App() {
           <Route path="/education" element={<Education />} />
           <Route path="/coins" element={<Coins />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path="/vendor" element={<VendorDashboard />} />
         </Routes>
       </Router>
       <Chatbot />
@@ -30,3 +33,4 @@ function App() {
 }
 
 export default App;
+
