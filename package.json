@@ -16,6 +16,7 @@
     "@nivo/marimekko": "^0.88.0",
     "@nivo/radar": "^0.88.0",
     "@nivo/radial-bar": "^0.88.0",
+    "dotenv": "^16.4.7",
     "firebase": "^11.2.0",
     "lucide-react": "^0.474.0",
     "motion": "^12.4.0",

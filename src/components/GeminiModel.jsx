@@ -12,7 +12,7 @@ const GeminiModel = ({ userInput }) => {
     const [requestId, setRequestId] = useState(null);
     const [generated, setGenerated] = useState(false);
 
-    const genAI = new GoogleGenerativeAI("AIzaSyDliX1R5txNCnLjRd1TtEpeb1keRRGfmu8");
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
     useEffect(() => {
         if (!userInput || userInput.inputs.length === 0 || generated) return;

@@ -437,3 +437,7 @@ button:hover {
 #vendorDashboard h2 {
   font-size: 3rem;
 }
+
+.icon div svg {
+  margin: 0 auto;
+}
