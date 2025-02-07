@@ -32,7 +32,7 @@ button {
   box-shadow: 2px 2px 15px 0px #FFA048;
 }
 
-.form-container h3{
+.form-container h3 {
   text-align: center;
   font-size: 1.7rem;
 }
@@ -297,4 +297,123 @@ button:hover {
   justify-content: space-between;
   gap: 0.5rem;
   min-width: 90%;
+}
+
+.chatbot-icon {
+  z-index: 100;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-window {
+  z-index: 100;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 400px;
+  height: 600px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.chatbot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #28a745;
+  color: white;
+}
+
+.chatbot-close {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.chatbot-messages {
+  padding: 10px;
+  max-height: 370px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.user {
+  background: #d1e7dd;
+  align-self: flex-end;
+}
+
+.bot {
+  background: #f8d7da;
+}
+
+.chatbot-thinking {
+  font-style: italic;
+  color: gray;
+}
+
+.chatbot-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.chatbot-input button {
+  margin-left: 10px;
+  padding: 8px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chatbot-slider {
+  padding: 10px;
+  background: #f0f0f0;
+  margin-bottom: 0.5rem;
+}
+
+.slider-item {
+  display: flex;
+  justify-content: center;
+}
+
+.slider-item button {
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.slick-dots li button::before {
+  font-size: 10px !important;
 }
