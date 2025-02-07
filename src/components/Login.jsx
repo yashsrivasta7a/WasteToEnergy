@@ -4,18 +4,32 @@ import React from "react";
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
 
-  return <button style={{
-    marginTop: "20px",
-    padding: "10px 300px",
-    border: "none",
-    backgroundColor: "#90ee90",
-    color: "#333",
-    fontSize: "1rem",
-    fontWeight: "900",
-    cursor: "pointer",
-    borderRadius: "5px",
-    left:"20px"
-}} onClick={() => loginWithRedirect()}>Login / SignUp</button>;
+  return (
+    <div style={{
+      display:"flex",
+    }} >
+      <button style={{
+        margin:'1rem auto',
+        padding:'20px',
+        width:'40%',
+        textAlign:'center'
+      }}
+        onClick={() => loginWithRedirect({ redirectUri: "https://organic-waste-to-energy.vercel.app/dashboard" })}
+      >
+        Login / SignUp
+      </button>
+      <button style={{
+        margin:'1rem auto',
+        padding:'20px',
+        width:'40%',
+        textAlign:'center'
+      }}
+        onClick={() => loginWithRedirect({ redirectUri: "https://organic-waste-to-energy.vercel.app/vendor" })}
+      >
+        Login/SignUp for Vendors
+      </button>
+    </div>
+  );
 };
 
 export default LoginButton;
