@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Coupon from "../components/Coupon";
 import Navbar from "../components/Navbar";
-import { database, ref, onValue } from "../firebase";
+import { ref, onValue } from "firebase/database";
+import { database } from "../firebase";
 
 function Coins() {
-
     const [totalCoins, setTotalCoins] = useState(0);
 
     useEffect(() => {
-        const dbRef = ref(database, "waste-data");
+        const dbRef = ref(database, "requests"); // Correct Firebase path
 
         const unsubscribe = onValue(dbRef, (snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 let coinsSum = 0;
 
-                // Iterate through all sub-nodes inside "waste-data"
-                Object.values(data).forEach((entry) => {
-                    if (entry?.Coins_Generated !== undefined) {
-                        coinsSum += entry.Coins_Generated; // Add all coin values
+                // Iterate through each request and sum up "Coins_Generated"
+                Object.values(data).forEach((request) => {
+                    if (request?.aiResponse?.Coins_Generated !== undefined) {
+                        coinsSum += request.aiResponse.Coins_Generated;
                     }
                 });
 
@@ -33,9 +33,9 @@ function Coins() {
 
     return (
         <section id="coins">
-            <div className="Nav-container ">
+            <div className="Nav-container">
                 <div className="total-coins">
-                    <h2>Total Coins Available: {totalCoins}</h2>
+                    <h2>Total Coins Available: {totalCoins.toFixed(2)}</h2> {/* Formatting to 2 decimal places */}
                 </div>
                 <Navbar />
             </div>

@@ -12,11 +12,12 @@ const GeminiModel = ({ userInput }) => {
     const [response, setResponse] = useState(null);
     const [isVerified, setIsVerified] = useState(false);
     const [requestId, setRequestId] = useState(null);
+    const [generated, setGenerated] = useState(false); // Prevent multiple generations
 
     const genAI = new GoogleGenerativeAI("AIzaSyDliX1R5txNCnLjRd1TtEpeb1keRRGfmu8");
 
     useEffect(() => {
-        if (!userInput || userInput.inputs.length === 0) return;
+        if (!userInput || userInput.inputs.length === 0 || generated) return;
 
         const fetchResponse = async () => {
             try {
@@ -42,7 +43,6 @@ const GeminiModel = ({ userInput }) => {
       
                 Provide the response in JSON format *ONLY* and *REMOVE* markdown formatting like \`\`\`json or \`\`\`.
               `;
-      
 
                 const result = await model.generateContent({
                     contents: [{ role: "user", parts: [{ text: prompt }] }],
@@ -69,6 +69,7 @@ const GeminiModel = ({ userInput }) => {
                 });
 
                 setResponse(sanitizedData);
+                setGenerated(true); // Prevents multiple generations
             } catch (error) {
                 console.error("Error fetching response:", error);
                 setResponse({ error: "Failed to generate response." });
@@ -80,7 +81,7 @@ const GeminiModel = ({ userInput }) => {
 
     // 🔥 Push JSON to Firebase on "Verify" button click
     const handleVerify = () => {
-        if (!response || response.error) return;
+        if (!response || response.error || requestId) return; // Prevent multiple pushes
 
         const dbRef = ref(database, "requests");
         const newRequestRef = push(dbRef, {
@@ -114,18 +115,24 @@ const GeminiModel = ({ userInput }) => {
                 response.error ? (
                     <p>{response.error}</p>
                 ) : (
-                    <pre className="ai-content">{JSON.stringify(response, null, 2)}</pre>
+                    <div className="ai-content">
+                        {response && Object.entries(response).map(([key, value]) => (
+                            <p key={key}>
+                                {key.replace(/_/g, " ")}:{typeof value === "object" ? JSON.stringify(value) : <strong>{value}</strong>}
+                            </p>
+                        ))}
+                    </div>
                 )
             ) : (
                 <p>Waiting for input...</p>
             )}
 
-            <button 
-                style={{ margin: '1rem auto', backgroundColor: '#007bff' }} 
-                onClick={handleVerify} 
-                disabled={!response || response.error || isVerified}
+            <button
+                style={{ margin: '1rem auto', backgroundColor: '#007bff' }}
+                onClick={handleVerify}
+                disabled={!response || response.error || requestId}
             >
-                {isVerified ? "Verified ✅" : "Verify"}
+                {requestId ? "Verified ✅" : "Get Verified?"}
             </button>
         </div>
     );

@@ -418,3 +418,22 @@ button:hover {
 .slick-dots li button::before {
   font-size: 10px !important;
 }
+
+.request-card {
+  background-color: #fff9e3;
+  border-radius: 10px;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.request-card pre {
+  font-family: 'Outfit', sans-serif;
+}
+
+.request-card .approve-btn {
+  margin: 1rem auto;
+}
+
+#vendorDashboard h2 {
+  font-size: 3rem;
+}

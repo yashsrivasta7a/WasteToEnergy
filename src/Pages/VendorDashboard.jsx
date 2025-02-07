@@ -22,17 +22,24 @@ const VendorDashboard = () => {
     };
 
     return (
-        <div className="dashboard-container">
+        <section id="vendorDashboard">
             <h2>Pending Approvals</h2>
-            {requests.map((req) => (
-                !req.approved && (
-                    <div key={req.id} className="request-card">
-                        <pre>{JSON.stringify(req, null, 2)}</pre>
-                        <button className="approve-btn" onClick={() => handleApproval(req.id)}>Approve</button>
-                    </div>
-                )
-            ))}
-        </div>
+            <div className="dashboard-container">
+                {requests.map((req) => (
+                    !req.approved && (
+                        <div key={req.id} className="request-card">
+                            <pre>
+                                {JSON.stringify(req, null, 2)
+                                    .replace(/_/g, " ") // Replace underscores with spaces
+                                    .replace(/[\[\]{}"]/g, "") // Remove brackets and double quotes
+                                }
+                            </pre>
+                            <button className="approve-btn" onClick={() => handleApproval(req.id)}>Approve</button>
+                        </div>
+                    )
+                ))}
+            </div>
+        </section>
     );
 };
 
