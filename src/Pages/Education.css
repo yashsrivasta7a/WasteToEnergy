@@ -4,6 +4,12 @@
     font-size: 5rem;
     font-weight: 800;
 }
+.faq {
+    text-align: center;
+    color: #fdfbef;
+    font-size: 3rem;
+    font-weight: 800;
+}
 
 #education {
     display: flex;
@@ -44,4 +50,21 @@ padding-top: 4rem;
 .edu-card:hover {
     transform: translateY(-2px);
     box-shadow: 2px 4px 20px rgba(0, 0, 0, 0.2);
+}
+.video-container{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+}
+.video_player{
+    margin-top: 2rem;
+    background-color: #fdfbef;
+    padding: 1.5rem;
+    padding-top: 0.3rem;
+    margin: 1rem;
+    border-radius: 20px;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    
 }
